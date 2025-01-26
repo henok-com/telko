@@ -2,22 +2,19 @@ const { google } = require("googleapis");
 const { Telegraf, Markup } = require("telegraf");
 const path = require("path");
 const fs = require("fs");
-const credentialsBase64 = process.env.GOOGLE_CREDENTIALS_BASE64;
+const credentials = process.env.GOOGLE_CREDENTIALS_BASE64;
 
-if (!credentialsBase64) {
-  console.error("GOOGLE_CREDENTIALS_BASE64 environment variable not set.");
-  process.exit(1);
-}
 
-const credentialsPath = path.join(__dirname, "credentials.json");
-fs.writeFileSync(credentialsPath, credentialsBase64);
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 let filteredData = [];
 
 async function readSheetData() {
   const auth = new google.auth.GoogleAuth({
-    keyFile: credentialsPath,
+    credentials: {
+      client_email: credentials.client_email,
+      private_key: credentials.private_key,
+    },
     scopes: ["https://www.googleapis.com/auth/spreadsheets.readonly"],
   });
 
