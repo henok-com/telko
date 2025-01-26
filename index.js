@@ -2,7 +2,7 @@ const { google } = require("googleapis");
 const { Telegraf, Markup } = require("telegraf");
 const path = require("path");
 const fs = require("fs");
-const credentials = process.env.GOOGLE_CREDENTIALS_BASE64;
+const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS_BASE64);
 
 
 
