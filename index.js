@@ -8,7 +8,7 @@ const credentials = process.env.GOOGLE_CREDENTIALS_BASE64;
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 let filteredData = [];
-
+console.log(credentials);
 async function readSheetData() {
   const auth = new google.auth.GoogleAuth({
     credentials: {
