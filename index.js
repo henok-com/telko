@@ -9,9 +9,8 @@ if (!credentialsBase64) {
   process.exit(1);
 }
 
-const credentialsBuffer = Buffer.from(credentialsBase64, "base64");
 const credentialsPath = path.join(__dirname, "credentials.json");
-fs.writeFileSync(credentialsPath, credentialsBuffer);
+fs.writeFileSync(credentialsPath, credentialsBase64);
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 let filteredData = [];
