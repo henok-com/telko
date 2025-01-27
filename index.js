@@ -39,8 +39,7 @@ async function readSheetData() {
 readSheetData();
 
 const bot = new Telegraf(BOT_TOKEN);
-let id;
-let course;
+let id = null;
 
 const courses = [
   {
