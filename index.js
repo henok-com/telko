@@ -82,7 +82,12 @@ bot.on("text", (ctx) => {
         'ትክክለኛ የመታወቂያ ቁጥር አላስገባችሁም። ማስገባት የሚቻለው በ"2/****" ፎርማት ነው።'
       );
     }
-  } else if (checkMenu(userText)) {
+  } 
+});
+
+bot.on("text", (ctx) => {
+  const menu = ctx.message.text;
+  if (checkMenu(menu)) {
     // Check if the user has selected a valid course
     const index = filteredData.findIndex((row) => row[0] === id);
 
@@ -106,8 +111,8 @@ bot.on("text", (ctx) => {
     // Invalid course selection
     ctx.reply("እባክዎትን ትክክለኛ አማራጭ ይምረጡ።");
   }
+  
 });
-
 // Web server for health check
 app.get("/", (req, res) => {
   res.send("Hello, World!");
