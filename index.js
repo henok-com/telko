@@ -39,7 +39,7 @@ async function readSheetData() {
 readSheetData();
 
 const bot = new Telegraf(BOT_TOKEN);
-let id = null;
+let id = "";
 
 const courses = [
   {
@@ -64,7 +64,7 @@ function checkMenu(menuName) {
 }
 
 bot.on("text", (ctx) => {
-  if (id == null) {
+  if (id == "") {
     if (idRegex.test(ctx.message.text)) {
       id = ctx.message.text;
       ctx.reply(
@@ -81,13 +81,13 @@ bot.on("text", (ctx) => {
         `የምስጢረ ሥላሴ ፈተና ውጤቶት፡ \n${filteredData[index][1]} \n እናመሰግናለን!!! በድጋሚ ለማየትለማየት የመታወቂያ ቁጥርዎን ያስገቡ!`,
         Markup.removeKeyboard()
       );
-      id = null;
+      id = "";
     } else {
       ctx.reply(
         `የፈተናዎ ውጤት አልተገኘም እባክዎትን በድጋሜ የመታወቂያ ቁጥር በማስገባት ይሞክሩ። በድጋሚ ሞክረው ካልሰራልዎት በአካል ፍኖተ ሰማዕታት ሰንበት ትምህርት ቤት ትምህርት ክፍል በመሄድ ያናግሯቸው እናመሰግናለን!!!`,
         Markup.removeKeyboard()
       );
-      id = null;
+      id = "";
     }
   }
 });
