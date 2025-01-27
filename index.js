@@ -52,7 +52,7 @@ readSheetData();
 const bot = new Telegraf(BOT_TOKEN);
 
 // ID validation regex
-const idRegex = /2\/[0-9]{4}$/;
+const idRegex = /2\/[0-9]{4}$/g;
 
 // Check if a course exists by name
 function checkMenu(menuName) {
