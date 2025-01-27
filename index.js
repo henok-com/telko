@@ -1,10 +1,9 @@
 const { google } = require("googleapis");
 const { Telegraf, Markup } = require("telegraf");
-const path = require("path");
-const fs = require("fs");
+const express = require("express");
+const app = express();
+
 const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS_BASE64);
-
-
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 let filteredData = [];
@@ -80,13 +79,13 @@ bot.on("text", (ctx) => {
     const index = filteredData.findIndex((row) => row[0] === id);
     if (index != -1) {
       ctx.reply(
-        `የምስጢረ ሥላሴ ፈተና ውጤቶት፡ \n${filteredData[index][1]} \n እናመሰግናለን!!!`,
+        `የምስጢረ ሥላሴ ፈተና ውጤቶት፡ \n${filteredData[index][1]} \n እናመሰግናለን!!! በድጋሚ ለማየትለማየት የመታወቂያ ቁጥርዎን ያስገቡ!`,
         Markup.removeKeyboard()
       );
       id = null;
     } else {
       ctx.reply(
-        `የፈተናዎ ውጤት አልተገኘም እባክዎትን በድጋሜ ይሞክሩ። በድጋሚ ሞክረው ካልሰራልዎት በአካል ፍኖተ ሰማዕታት ሰንበት ትምህርት ቤት ትምህርት ክፍል በመሄድ ያናግሯቸው እናመሰግናለን!!!`,
+        `የፈተናዎ ውጤት አልተገኘም እባክዎትን በድጋሜ የመታወቂያ ቁጥር በማስገባት ይሞክሩ። በድጋሚ ሞክረው ካልሰራልዎት በአካል ፍኖተ ሰማዕታት ሰንበት ትምህርት ቤት ትምህርት ክፍል በመሄድ ያናግሯቸው እናመሰግናለን!!!`,
         Markup.removeKeyboard()
       );
       id = null;
@@ -94,5 +93,11 @@ bot.on("text", (ctx) => {
   }
 });
 
+app.get("/", (req, res) => {
+  res.send("Hello, World!");
+});
+
 bot.launch();
 console.log("Bot is running....");
+
+app.listen(3000);
