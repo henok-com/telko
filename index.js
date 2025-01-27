@@ -52,7 +52,8 @@ readSheetData();
 const bot = new Telegraf(BOT_TOKEN);
 
 // ID validation regex
-const idRegex = /2\/[0-9]{0,4}$/g;
+const idRegex = /2\/[0-9]{0,4}$/;
+let other = "";
 
 // Check if a course exists by name
 function checkMenu(menuName) {
@@ -71,23 +72,18 @@ bot.on("text", (ctx) => {
 
   // Check if the user has entered an ID
   if (id === "") {
-    if (idRegex.test(userText)) {
-      id = userText; // Store the ID
+    const isValid = idRegex.test(userText);
+    if (isValid) {
+      id = userText;
+      other = userText; // Store the ID
       ctx.reply(
         "ውጤት ማየት የፈለጉትን ትምህርት ይምርጡ:",
         Markup.keyboard(courses.map((course) => course.name)).resize()
       );
     } else {
-      ctx.reply(
-        'ትክክለኛ የመታወቂያ ቁጥር አላስገባችሁም። ማስገባት የሚቻለው በ"2/****" ፎርማት ነው።'
-      );
+      ctx.reply('ትክክለኛ የመታወቂያ ቁጥር አላስገባችሁም። ማስገባት የሚቻለው በ"2/****" ፎርማት ነው።');
     }
-  } 
-});
-
-bot.on("text", (ctx) => {
-  const menu = ctx.message.text;
-  if (checkMenu(menu)) {
+  } else if (checkMenu(userText)) {
     // Check if the user has selected a valid course
     const index = filteredData.findIndex((row) => row[0] === id);
 
@@ -97,22 +93,27 @@ bot.on("text", (ctx) => {
         `የምስጢረ ሥላሴ ፈተና ውጤቶት፡ \n${filteredData[index][1]} \n እናመሰግናለን!!! በድጋሚ ለማየት የመታወቂያ ቁጥርዎን ያስገቡ!`,
         Markup.removeKeyboard()
       );
+      id = "";
     } else {
       // If the ID is not found
       ctx.reply(
         `የፈተናዎ ውጤት አልተገኘም። እባክዎትን በድጋሜ የመታወቂያ ቁጥር በማስገባት ይሞክሩ። በድጋሚ ሞክረው ካልሰራልዎት በአካል ፍኖተ ሰማዕታት ሰንበት ትምህርት ቤት ትምህርት ክፍል በመሄድ ያናግሯቸው።`,
         Markup.removeKeyboard()
       );
+      id = "";
     }
-
+    return;
     // Reset ID for the next operation
-    id = "";
   } else {
     // Invalid course selection
     ctx.reply("እባክዎትን ትክክለኛ አማራጭ ይምረጡ።");
   }
-  
 });
+
+bot.command("hello", (ctx) => {
+  ctx.reply("hello clicked");
+});
+
 // Web server for health check
 app.get("/", (req, res) => {
   res.send("Hello, World!");
@@ -120,6 +121,8 @@ app.get("/", (req, res) => {
 
 // Launch the bot
 bot.launch();
+process.once("SIGINT", () => bot.stop("SIGINT"));
+process.once("SIGTERM", () => bot.stop("SIGTERM"));
 console.log("Bot is running...");
 
 // Start the express server
